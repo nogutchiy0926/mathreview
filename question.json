@@ -1,0 +1,73 @@
+[
+  {
+    "unit": "数と式",
+    "difficulty": "基礎",
+    "mistake": "計算ミス",
+    "question": "x²−5x+6=0 を解け",
+    "answer": "x=2,3"
+  },
+  {
+    "unit": "二次関数",
+    "difficulty": "基礎",
+    "mistake": "公式忘れ",
+    "question": "二次関数 y=x²−4x+3 の頂点の座標を求めよ",
+    "answer": "(2,−1)"
+  },
+  {
+    "unit": "数と式",
+    "difficulty": "標準",
+    "mistake": "計算ミス",
+    "question": "x²+3x−10=0 を解け",
+    "answer": "x=2,−5"
+  },
+  {
+    "unit": "三角比",
+    "difficulty": "標準",
+    "mistake": "読み間違い",
+    "question": "余弦定理を用いて、a=3, b=4, C=60° のとき c を求めよ",
+    "answer": "c=√13"
+  },
+  {
+    "unit": "場合の数と確率",
+    "difficulty": "応用",
+    "mistake": "公式忘れ",
+    "question": "サイコロを2回投げて出た目の和が7になる確率を求めよ",
+    "answer": "1/6"
+  },
+  {
+    "unit": "数列",
+    "difficulty": "基礎",
+    "mistake": "計算ミス",
+    "question": "数列 1,3,5,7,... の第10項を求めよ",
+    "answer": "19"
+  },
+  {
+    "unit": "数列",
+    "difficulty": "標準",
+    "mistake": "公式忘れ",
+    "question": "等比数列 2,6,18,... の第5項を求めよ",
+    "answer": "162"
+  },
+  {
+    "unit": "微分積分Ⅱ",
+    "difficulty": "標準",
+    "mistake": "読み間違い",
+    "question": "微分: f(x)=x³−3x² の導関数を求めよ",
+    "answer": "f'(x)=3x²−6x"
+  },
+  {
+    "unit": "微分積分Ⅱ",
+    "difficulty": "応用",
+    "mistake": "計算ミス",
+    "question": "∫(2x+1)dx を計算せよ",
+    "answer": "x²+x+C"
+  },
+  {
+    "unit": "ベクトル",
+    "difficulty": "応用",
+    "mistake": "公式忘れ",
+    "question": "ベクトル a=(1,2), b=(3,−1) の内積を求めよ",
+    "answer": "1"
+  }
+]
+

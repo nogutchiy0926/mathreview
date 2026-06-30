@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>復習問題生成</title>
+<style>
+  :root {
+    --bg: #eaf6fc;
+    --card-bg: #ffffff;
+    --card-border: #cfe9f7;
+    --text: #1b3a4b;
+    --text-sub: #5a7d8c;
+    --accent: #69c5ec;
+    --accent-hover: #3194bf;
+    --danger: #e0556a;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 32px 16px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Hiragino Kaku Gothic ProN", "Segoe UI", sans-serif;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .panel {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(41, 171, 226, 0.08);
+  }
+
+  .field {
+    margin-bottom: 20px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  label {
+    display: block;
+    font-size: 14px;
+    color: var(--text-sub);
+    margin-bottom: 8px;
+  }
+
+  select {
+    width: 100%;
+    padding: 12px 14px;
+    background: #f4fbff;
+    color: var(--text);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    font-size: 15px;
+    appearance: none;
+    transition: border-color 0.2s ease;
+  }
+
+  select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .checkbox-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .checkbox-row label {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  button.generate-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+
+  button.generate-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+  }
+
+  button.generate-btn:active {
+    transform: translateY(0);
+  }
+
+  #result-area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .question-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 2px 8px rgba(41, 171, 226, 0.08);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .question-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 6px 16px rgba(41, 171, 226, 0.15);
+  }
+
+  .q-number {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: bold;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .q-meta {
+    font-size: 12px;
+    color: var(--text-sub);
+    margin-bottom: 10px;
+  }
+
+  .q-text {
+    font-size: 16px;
+    margin-bottom: 14px;
+    white-space: pre-wrap;
+  }
+
+  .answer-btn {
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--accent);
+    background: transparent;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .answer-btn:hover {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .q-answer {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--card-border);
+    color: var(--text-sub);
+    font-size: 15px;
+    display: none;
+  }
+
+  .q-answer.visible {
+    display: block;
+  }
+
+  .message {
+    text-align: center;
+    color: var(--text-sub);
+    padding: 24px;
+  }
+
+  .message.error {
+    color: var(--danger);
+  }
+
+  @media (max-width: 480px) {
+    .panel {
+      padding: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="panel">
+    <div class="field">
+      <label for="unit-select">単元</label>
+      <select id="unit-select"></select>
+    </div>
+
+    <div class="field">
+      <label for="difficulty-select">難易度</label>
+      <select id="difficulty-select"></select>
+    </div>
+
+    <div class="field">
+      <label for="mistake-select">ミス分類</label>
+      <select id="mistake-select"></select>
+    </div>
+
+    <div class="field">
+      <div class="checkbox-row">
+        <input type="checkbox" id="random-checkbox">
+        <label for="random-checkbox">ランダム生成</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <button class="generate-btn" id="generate-btn">問題生成</button>
+    </div>
+  </div>
+
+  <div id="result-area"></div>
+
+</div>
+
+<script>
+const ALL_LABEL = "すべて";
+let questionData = [];
+
+const unitSelect = document.getElementById("unit-select");
+const difficultySelect = document.getElementById("difficulty-select");
+const mistakeSelect = document.getElementById("mistake-select");
+const randomCheckbox = document.getElementById("random-checkbox");
+const generateBtn = document.getElementById("generate-btn");
+const resultArea = document.getElementById("result-area");
+
+function populateSelect(selectEl, values) {
+  selectEl.innerHTML = "";
+  const allOption = document.createElement("option");
+  allOption.value = ALL_LABEL;
+  allOption.textContent = ALL_LABEL;
+  selectEl.appendChild(allOption);
+
+  values.forEach(v => {
+    const opt = document.createElement("option");
+    opt.value = v;
+    opt.textContent = v;
+    selectEl.appendChild(opt);
+  });
+}
+
+function getUniqueValues(data, key) {
+  return [...new Set(data.map(item => item[key]))];
+}
+
+function showMessage(text, isError) {
+  resultArea.innerHTML = "";
+  const div = document.createElement("div");
+  div.className = "message" + (isError ? " error" : "");
+  div.textContent = text;
+  resultArea.appendChild(div);
+}
+
+function init() {
+  fetch("question.json")
+    .then(res => {
+      if (!res.ok) throw new Error("読み込み失敗");
+      return res.json();
+    })
+    .then(data => {
+      questionData = data;
+      populateSelect(unitSelect, getUniqueValues(data, "unit"));
+      populateSelect(difficultySelect, getUniqueValues(data, "difficulty"));
+      populateSelect(mistakeSelect, getUniqueValues(data, "mistake"));
+    })
+    .catch(() => {
+      showMessage("問題データを読み込めませんでした", true);
+    });
+}
+
+function shuffleArray(arr) {
+  const result = [...arr];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function generateQuestions() {
+  const unit = unitSelect.value;
+  const difficulty = difficultySelect.value;
+  const mistake = mistakeSelect.value;
+  const isRandom = randomCheckbox.checked;
+
+  let filtered = questionData.filter(item => {
+    const unitMatch = unit === ALL_LABEL || item.unit === unit;
+    const difficultyMatch = difficulty === ALL_LABEL || item.difficulty === difficulty;
+    const mistakeMatch = mistake === ALL_LABEL || item.mistake === mistake;
+    return unitMatch && difficultyMatch && mistakeMatch;
+  });
+
+  if (filtered.length === 0) {
+    showMessage("申し訳ありません。そのような条件に一致する問題がありません。", true);
+    return;
+  }
+
+  if (isRandom) {
+    filtered = shuffleArray(filtered);
+  }
+
+  const selected = filtered.slice(0, 5);
+  renderQuestions(selected);
+}
+
+function renderQuestions(questions) {
+  resultArea.innerHTML = "";
+
+  questions.forEach((q, index) => {
+    const card = document.createElement("div");
+    card.className = "question-card";
+
+    const number = document.createElement("div");
+    number.className = "q-number";
+    number.textContent = "問題" + (index + 1);
+
+    const meta = document.createElement("div");
+    meta.className = "q-meta";
+    meta.textContent = `${q.unit} / ${q.difficulty} / ${q.mistake}`;
+
+    const text = document.createElement("div");
+    text.className = "q-text";
+    text.textContent = q.question;
+
+    const answerBtn = document.createElement("button");
+    answerBtn.className = "answer-btn";
+    answerBtn.textContent = "解答を表示";
+
+    const answer = document.createElement("div");
+    answer.className = "q-answer";
+    answer.textContent = q.answer;
+
+    answerBtn.addEventListener("click", () => {
+      answer.classList.toggle("visible");
+      answerBtn.textContent = answer.classList.contains("visible") ? "解答を隠す" : "解答を表示";
+    });
+
+    card.appendChild(number);
+    card.appendChild(meta);
+    card.appendChild(text);
+    card.appendChild(answerBtn);
+    card.appendChild(answer);
+
+    resultArea.appendChild(card);
+  });
+}
+
+generateBtn.addEventListener("click", generateQuestions);
+
+init();
+</script>
+
+</body>
+</html>
